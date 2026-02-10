@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_NAME=loovre
+      - DB_USER=loovre_user
+      - DB_PASSWORD=loovre_pass
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10
+    environment:
+      - MARIADB_ROOT_PASSWORD=root_pass
+      - MARIADB_DATABASE=loovre
+      - MARIADB_USER=loovre_user
+      - MARIADB_PASSWORD=loovre_pass
+    volumes:
+      - ./loovre.sql:/docker-entrypoint-initdb.d/init.sql
